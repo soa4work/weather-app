@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\DTO\GeoLocation;
-use App\Enums\Unit;
+use App\Enums\Units;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 use JetBrains\PhpStorm\ArrayShape;
@@ -12,7 +12,6 @@ use JetBrains\PhpStorm\Pure;
 
 class GetWeatherRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,7 +34,7 @@ class GetWeatherRequest extends FormRequest
             'city' => 'required_without:longitude,latitude|max:30',
             'longitude' => 'required_without:city|numeric|between:-180,180',
             'latitude' => 'required_without:city|numeric|between:-90,90',
-            'units' => new Enum(Unit::class),
+            'units' => [new Enum(Units::class)],
         ];
     }
 
@@ -48,4 +47,11 @@ class GetWeatherRequest extends FormRequest
         return null;
     }
 
+    #[ArrayShape(['units.Illuminate\Validation\Rules\Enum' => "string"])]
+    public function messages(): array
+    {
+        return [
+            'units.Illuminate\Validation\Rules\Enum' => 'An units should be either \'metric\' or \'imperial\'',
+        ];
+    }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
 use App\DTO\GeoLocation;
 use App\DTO\WeatherData;
 use App\DTO\Wind;
-use App\Enums\Unit;
+use App\Enums\Units;
 use App\Exceptions\NotFound;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -18,14 +18,14 @@ class OpenWeatherMapApi
      */
     public function getGeoLocation(string $city): GeoLocation
     {
-        $response = $this->getResponse('/geo/1.0/direct', ['q' => $city, 'limit' => 1])[0];
+        $response = $this->getResponse('/geo/1.0/direct', ['q' => $city, 'limit' => 1])[0] ?? [];
         return new GeoLocation($response['lon'] ?? null, $response['lat'] ?? null);
     }
 
     /**
      * @throws NotFound
      */
-    public function getCurrentWeather(GeoLocation $location, Unit $units = Unit::METRIC): WeatherData
+    public function getCurrentWeather(GeoLocation $location, Units $units): WeatherData
     {
         $response = $this->getResponse(
             '/data/2.5/weather',
@@ -55,15 +55,17 @@ class OpenWeatherMapApi
     {
         $key = md5($url . implode('_', $params));
         $response = Cache::remember($key, env('CACHE_TTL'), static function () use ($params, $url) {
-            Log::info('getting location data from 3party API');
-            return Http::get(
-                env('OPENWEATHERMAP_API_URL') . $url,
-                array_merge(['appid' => env('OPENWEATHERMAP_API_KEY')], $params)
-            )->json();
+            Log::info('getting data from 3party API', [$url, $params]);
+            try {
+                return Http::get(
+                    env('OPENWEATHERMAP_API_URL') . $url,
+                    array_merge(['appid' => env('OPENWEATHERMAP_API_KEY')], $params)
+                )->throw()->json();
+            } catch (\Throwable $e) {
+                Log::info($e->getMessage(), [$url, $params]);
+                return [];
+            }
         });
-        if (empty($response)) {
-            throw new NotFound();
-        }
-        return $response;
+        return $response ?: throw new NotFound();
     }
 }

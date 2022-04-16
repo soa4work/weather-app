@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Unit: string
+enum Units: string
 {
     case METRIC = 'metric';
     case IMPERIAL = 'imperial';

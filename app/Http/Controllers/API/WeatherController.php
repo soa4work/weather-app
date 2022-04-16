@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Enums\Unit;
+use App\Enums\Units;
 use App\Exceptions\NotFound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetWeatherRequest;
-use App\Service\OpenWeatherMapApi;
+use App\Services\OpenWeatherMapApi;
 use Illuminate\Http\JsonResponse;
-use function abort;
 use function response;
 
 class WeatherController extends Controller
@@ -21,10 +20,11 @@ class WeatherController extends Controller
     {
         try {
             $geoLocation = $request->getLocationParams() ?? $this->openWeatherMapApi->getGeoLocation($request['city']);
-            $weather = $this->openWeatherMapApi->getCurrentWeather($geoLocation, Unit::from($request['units']));
-            return response()->json([$weather]);
+            $weather = $this->openWeatherMapApi
+                ->getCurrentWeather($geoLocation, Units::tryFrom($request['units']) ?? Units::METRIC);
+            return response()->json(data: $weather, options: JSON_UNESCAPED_UNICODE);
         } catch (NotFound) {
-            return abort(404, 'not found');
+            return response()->json(['message' => 'not found'], 404);
         }
     }
 }
