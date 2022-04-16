@@ -3,7 +3,7 @@
 namespace Tests\Unit\DTO;
 
 use App\DTO\Wind;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class WindTest extends TestCase
 {
@@ -13,7 +13,7 @@ class WindTest extends TestCase
     public function test_getting_wind_direction_name_by_degree(float $degree, string $name): void
     {
         $wind = new Wind(25, $degree);
-        self::assertEquals($name, $wind->direction->value);
+        self::assertEquals($name, $wind->direction->name());
     }
 
     public function getDataForTest(): array

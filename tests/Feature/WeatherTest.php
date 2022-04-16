@@ -60,13 +60,13 @@ class WeatherTest extends TestCase
         yield [
             'request' => ['city' => 'unknown'],
             'stubs' => [],
-            'expected' => ['message' => 'not found'],
+            'expected' => ['message' => 'Not found.'],
             'statusCode' => 404,
         ];
         yield [
             'request' => ['city' => 'tomsk', 'units' => 'some'],
             'stubs' => [],
-            'expected' => ['message' => 'An units should be either \'metric\' or \'imperial\''],
+            'expected' => ['message' => 'Выбранное значение для units некорректно.'],
             'statusCode' => 422,
         ];
     }
