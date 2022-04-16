@@ -32,7 +32,7 @@ class OpenWeatherMapApi
             [
                 'lat' => $location->latitude,
                 'lon' => $location->longitude,
-                'lang' => env('LOCAL'),
+                'lang' => config('app.locale'),
                 'units' => $units->value,
             ]
         );
@@ -54,12 +54,12 @@ class OpenWeatherMapApi
     private function getResponse(string $url, array $params)
     {
         $key = md5($url . implode('_', $params));
-        $response = Cache::remember($key, env('CACHE_TTL'), static function () use ($params, $url) {
+        $response = Cache::remember($key, config('services.owm.cache_ttl'), static function () use ($params, $url) {
             Log::info('getting data from 3party API', [$url, $params]);
             try {
                 return Http::get(
-                    env('OPENWEATHERMAP_API_URL') . $url,
-                    array_merge(['appid' => env('OPENWEATHERMAP_API_KEY')], $params)
+                    config('services.owm.url') . $url,
+                    array_merge(['appid' => config('services.owm.key')], $params)
                 )->throw()->json();
             } catch (\Throwable $e) {
                 Log::info($e->getMessage(), [$url, $params]);

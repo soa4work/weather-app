@@ -24,6 +24,6 @@ class Wind implements \JsonSerializable
     #[ArrayShape(['direction' => "\App\Enums\WindDirection|null", 'speed' => "int"])]
     public function jsonSerialize(): array
     {
-        return ['direction' => $this->direction->value, 'speed' => (int) round($this->speed)];
+        return ['direction' => $this->direction->name(), 'speed' => (int) round($this->speed)];
     }
 }

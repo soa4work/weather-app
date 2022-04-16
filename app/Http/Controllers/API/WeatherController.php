@@ -24,7 +24,7 @@ class WeatherController extends Controller
                 ->getCurrentWeather($geoLocation, Units::tryFrom($request['units']) ?? Units::METRIC);
             return response()->json(data: $weather, options: JSON_UNESCAPED_UNICODE);
         } catch (NotFound) {
-            return response()->json(['message' => 'not found'], 404);
+            return abort(404, 'Not found.');
         }
     }
 }

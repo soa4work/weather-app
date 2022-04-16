@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,12 +52,12 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $e): \Illuminate\Http\Response|JsonResponse|Response
+    protected function invalidJson($request, ValidationException $exception): JsonResponse
     {
-        if ($request->is('api*')) {
-            $request->headers->set('Accept', 'application/json');
-        }
-        return parent::render($request, $e);
+        return response()->json(
+            data: ['message' => $exception->getMessage(), 'errors' => $exception->errors()],
+            status: $exception->status,
+            options: JSON_UNESCAPED_UNICODE
+        );
     }
-
 }

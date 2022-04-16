@@ -46,12 +46,4 @@ class GetWeatherRequest extends FormRequest
         }
         return null;
     }
-
-    #[ArrayShape(['units.Illuminate\Validation\Rules\Enum' => "string"])]
-    public function messages(): array
-    {
-        return [
-            'units.Illuminate\Validation\Rules\Enum' => 'An units should be either \'metric\' or \'imperial\'',
-        ];
-    }
 }
