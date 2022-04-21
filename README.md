@@ -10,7 +10,7 @@ git clone https://github.com/soa4work/weather-app.git
 cd weather-app
 cp .env.example .env
 docker-compose up -d
-docker-compose exec laravel.test bash
+docker-compose exec laravel.test composer install
 ./vendor/bin/sail up
 ```
 
