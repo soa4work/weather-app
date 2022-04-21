@@ -13,5 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/current', [\App\Http\Controllers\API\WeatherController::class, 'index'])
+Route::get('/current/{lang}', [\App\Http\Controllers\API\WeatherController::class, 'index'])
     ->name('api.index');

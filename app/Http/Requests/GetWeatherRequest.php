@@ -32,8 +32,8 @@ class GetWeatherRequest extends FormRequest
     {
         return [
             'city' => 'required_without:longitude,latitude|max:30',
-            'longitude' => 'required_without:city|numeric|between:-180,180',
-            'latitude' => 'required_without:city|numeric|between:-90,90',
+            'longitude' => 'required_with:latitude|required_without:city|numeric|between:-180,180',
+            'latitude' => 'required_with:longitude|required_without:city|numeric|between:-90,90',
             'units' => [new Enum(Units::class)],
         ];
     }
