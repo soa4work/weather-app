@@ -13,7 +13,7 @@ class WeatherTest extends TestCase
     public function test_app_returns_responses(array $request, array $responses, array $expected, int $statusCode): void
     {
         $this->mockHttpClient($responses);
-        $response = $this->get('/api/current?' . http_build_query($request));
+        $response = $this->get('/api/current/ru?' . http_build_query($request));
         $response->assertStatus($statusCode);
         $response->assertJson($expected);
     }
@@ -60,7 +60,7 @@ class WeatherTest extends TestCase
         yield [
             'request' => ['city' => 'unknown'],
             'stubs' => [],
-            'expected' => ['message' => 'Not found.'],
+            'expected' => ['message' => 'Не найдено.'],
             'statusCode' => 404,
         ];
         yield [
