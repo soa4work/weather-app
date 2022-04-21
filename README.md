@@ -27,7 +27,7 @@ docker-compose exec laravel.test composer install
 
 #### Examples: 
 
-- `https://localhost/api/current/ru?city=tomsk`
+- `http://localhost/api/current/ru?city=tomsk`
 
 response: 200
 ```json
@@ -43,7 +43,7 @@ response: 200
 }
 ```
 
-- `https://localhost/api/current/ru?city=unknown`
+- `http://localhost/api/current/ru?city=unknown`
 
 response: 404
 ```json
@@ -52,7 +52,7 @@ response: 404
 }
 ```
 
-- `https://localhost/api/current/ru?latitude=220&longitude=1`
+- `http://localhost/api/current/ru?latitude=220&longitude=1`
 
 response: 422
 ```json
