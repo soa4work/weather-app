@@ -1,6 +1,6 @@
 # Weather app
 
-Test task to build s small weather app
+Test task to build a small weather app with using Laravel 
 
 ### 
 
