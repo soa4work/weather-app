@@ -10,13 +10,15 @@ git clone https://github.com/soa4work/weather-app.git
 cd weather-app
 cp .env.example .env
 docker-compose up -d
+docker-compose exec laravel.test bash
+./vendor/bin/sail up
 ```
 
 ## Endpoints
 
-### Creates new short link.
+### Get current weather
 
-- **Url**: /api/current
+- **Url**: /api/current/{lang}/
 - **Method**: GET
 - **Params**:
     - *city*: string; required only when longitude and latitude params are empty;   
@@ -27,7 +29,7 @@ docker-compose up -d
 
 #### Examples: 
 
-- `https://localhost/api/current?city=tomsk`
+- `https://localhost/api/current/ru?city=tomsk`
 
 response: 200
 ```json
@@ -43,21 +45,25 @@ response: 200
 }
 ```
 
-- `https://localhost/api/current?city=unknown`
+- `https://localhost/api/current/ru?city=unknown`
 
 response: 404
 ```json
 {
-    "message": "Not found."
+    "message": "Не найдено."
 }
 ```
 
-- `https://localhost/api/current?city=unknown`
+- `https://localhost/api/current/ru?latitude=220&longitude=1`
 
 response: 422
 ```json
 {
-    "HasError": true,
-    "Message": "The url field is required."
+    "message": "Значение поля latitude должно быть между -90 и 90.",
+    "errors": {
+        "latitude": [
+            "Значение поля latitude должно быть между -90 и 90."
+        ]
+    }
 }
 ```
