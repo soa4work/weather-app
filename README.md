@@ -1,10 +1,10 @@
-## Weather app
+# Weather app
 
 Test task to build s small weather app
 
 ### 
 
-# Installation:
+## Installation:
 ```console
 git clone https://github.com/soa4work/weather-app.git
 cd weather-app
@@ -14,9 +14,7 @@ docker-compose exec laravel.test bash
 ./vendor/bin/sail up
 ```
 
-## Endpoints
-
-### Get current weather
+### Get current weather endpoint
 
 - **Url**: /api/current/{lang}/
 - **Method**: GET
@@ -67,3 +65,7 @@ response: 422
     }
 }
 ```
+
+## Tests
+
+`./vendor/bin/sail up -d && ./vendor/bin/sail test`
